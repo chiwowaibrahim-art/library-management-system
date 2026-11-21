@@ -8,8 +8,8 @@ function App() {
     <>
       <header className="site-header">
         <Link to="/" className="brand">
-          <span className="brand-icon">📚</span>
-          <span>Library<span className="brand-highlight">Hub</span></span>
+          <span className="brand-icon"></span>
+          <span>Smart<span className="brand-highlight">Library</span></span>
         </Link>
 
         <nav>
@@ -32,7 +32,7 @@ function App() {
       </Routes>
 
       <footer className="site-footer">
-        <p>LibraryHub — Discover. Read. Learn.</p>
+        <p>&copy; {2026} Copyright. Smart Library. All rights reserved.</p>
       </footer>
     </>
   );

@@ -53,11 +53,11 @@ a {
 }
 
 .brand-highlight {
-  color: #b77945;
+  color: rgb(4, 4, 117);
 }
 
 .site-header nav a {
-  color: #59645e;
+  color: #000000;
   font-weight: 600;
 }
 
@@ -107,7 +107,7 @@ a {
 }
 
 .search-icon {
-  color: #8b948e;
+  color: #000000;
   font-size: 28px;
 }
 
@@ -194,14 +194,14 @@ a {
 
 .book-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px #26352d12;
+  box-shadow: 0 12px 30px #000000;
 }
 
 .book-cover {
   min-height: 185px;
   padding: 25px;
-  background: #e9e4d7;
-  color: #34483c;
+  background: #000000;
+  color: #FFFBFC;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -226,8 +226,8 @@ a {
 
 .genre-label {
   display: inline-block;
-  color: #a36d3e;
-  background: #f7efe5;
+  color: #FFFBFC;
+  background: #0C1D32;
   padding: 5px 10px;
   border-radius: 20px;
   font-size: 11px;
@@ -248,7 +248,7 @@ a {
 
 .details-link {
   display: inline-block;
-  color: #a36d3e;
+  color: #007AAD;
   font-weight: 700;
   font-size: 13px;
   margin-top: 15px;
@@ -281,7 +281,7 @@ a {
 }
 
 .error-message button {
-  background: #193b32;
+  background: #000000;
   color: white;
   padding: 11px 20px;
   border: none;
@@ -358,7 +358,7 @@ a {
 
 .back-link {
   display: inline-block;
-  color: #a36d3e;
+  color: #007AAD;
   font-weight: 600;
   margin-bottom: 30px;
 }
@@ -375,7 +375,7 @@ a {
 
 .detail-cover {
   min-height: 400px;
-  background: #e9e4d7;
+  background: #000000;
   border-radius: 8px;
   padding: 30px;
   display: flex;
@@ -383,7 +383,7 @@ a {
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: #34483c;
+  color: #FFFBFC;
 }
 
 .detail-cover span {
@@ -405,7 +405,7 @@ a {
 
 .detail-divider {
   height: 1px;
-  background: #eeeae2;
+  background: #d4e0da;
   margin: 25px 0;
 }
 
@@ -428,8 +428,8 @@ a {
 .site-footer {
   padding: 28px 20px;
   text-align: center;
-  background: #193b32;
-  color: #d4e0da;
+  background: #000000;
+  color: #FFFBFC;
   font-size: 13px;
 }
 
