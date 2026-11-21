@@ -1,82 +1,171 @@
 # Library Management System
 
+A full-stack Library Management System built with **NestJS, React, PostgreSQL and Prisma ORM**. The application provides a digital library catalogue where users can browse books, search by title or author, filter by genre and view book information.
+
 ## 1. Project Overview
 
-The Library Management System is a backend application designed to manage library resources and user activities. It provides a structured way to organise books, manage genres, and maintain user information.
+The Library Management System is designed to manage library resources and user activities.
 
-The project uses **PostgreSQL** as its relational database and **Prisma ORM** to define database models, manage relationships, perform database operations, and seed initial records.
+The project consists of two main applications:
+
+- **Backend API:** Handles database operations, authentication, authorization, book management, genre management and user management.
+- **Frontend:** Provides a responsive interface for browsing, searching, filtering and viewing books.
+
+PostgreSQL is used as the relational database, while Prisma ORM manages database models, relationships and queries.
 
 ## 2. Technologies Used
 
-- **Node.js** – JavaScript runtime environment.
-- **NestJS** – Backend application framework.
-- **PostgreSQL** – Relational database management system.
-- **Prisma ORM** – Database modelling and access.
-- **TypeScript** – Programming language used for the backend.
-- **Neon** – Hosted PostgreSQL database provider.
+### Backend
 
-## 3. Database Models
+| Technology | Purpose |
+|---|---|
+| Node.js | JavaScript runtime |
+| NestJS | Backend framework |
+| TypeScript | Programming language |
+| PostgreSQL | Relational database |
+| Prisma ORM | Database access and management |
+| Passport.js | Authentication integration |
+| JWT | Token-based authentication |
+| bcrypt | Password hashing |
+| class-validator | Request validation |
+| class-transformer | Data transformation |
 
-The database contains the following main models:
+### Frontend
+
+| Technology | Purpose |
+|---|---|
+| React | User interface development |
+| Vite | Frontend development and build tool |
+| JavaScript | Frontend programming |
+| React Router DOM | Client-side navigation |
+| CSS3 | Styling and responsive layouts |
+
+### Other Tools
+
+- Neon – Hosted PostgreSQL database.
+- Postman – API testing.
+- Git and GitHub – Version control.
+
+## 3. Main Features
+
+### Book Management
+- Create, retrieve, update and delete books.
+- View individual book details.
+- Search books by title or author.
+- Filter books by genre.
+- Paginate book results.
+
+### Genre Management
+- Create and manage book genres.
+- Retrieve all available genres.
+- Update and delete genres.
+
+### User Management and Security
+- User registration and login.
+- Password hashing using bcrypt.
+- JWT-based authentication.
+- Role-based authorization.
+- Support for Patron and Librarian roles.
+- Librarian-only book and user write operations.
+
+### Frontend Features
+- Responsive book catalogue.
+- Search books by title and author.
+- Debounced live search.
+- Filter books by genre.
+- Sort books by title or author.
+- Individual book details pages.
+- Loading indicators and skeleton cards.
+- Friendly error messages.
+- Empty search result messages.
+- Responsive layouts for desktop, tablet and mobile devices.
+
+## 4. Project Structure
+
+```text
+library-management-system/
+│
+├── api/
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   ├── schema.prisma
+│   │   └── seed.ts
+│   │
+│   ├── src/
+│   │   ├── auth/
+│   │   ├── books/
+│   │   ├── genres/
+│   │   ├── users/
+│   │   ├── prisma/
+│   │   ├── app.module.ts
+│   │   └── main.ts
+│   │
+│   ├── docs/
+│   │   └── postman_collection.json
+│   ├── .env.example
+│   └── package.json
+│
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── BookCard.jsx
+│   │   │   ├── BookGrid.jsx
+│   │   │   ├── GenreFilter.jsx
+│   │   │   ├── SearchBar.jsx
+│   │   │   └── SkeletonCard.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── HomePage.jsx
+│   │   │   └── BookDetail.jsx
+│   │   │
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   │
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── index.css
+│   │   └── main.jsx
+│   │
+│   ├── .env
+│   ├── package.json
+│   └── vite.config.js
+│
+├── .gitignore
+└── README.md
+```
+
+## 5. Database Models
+
+The main database models include:
 
 ### User
-Stores information about people using the library system.
+Stores library user information, including name, email and role.
 
-Important fields:
-- `id`
-- `name`
-- `email`
-- `role`
-- `createdAt`
-- `updatedAt`
-
-The User model uses a Role enum with two possible values:
-- `PATRON`
-- `LIBRARIAN`
+Supported roles:
+- PATRON
+- LIBRARIAN
 
 ### Genre
-Stores the different categories of books available in the library.
-
-Important fields:
-- `id`
-- `name`
-- `description`
-- `createdAt`
-- `updatedAt`
+Stores book categories, including genre name and description.
 
 ### Book
-Stores information about books in the library.
-
-Important fields:
-- `id`
-- `title`
-- `author`
-- `isbn`
-- `description`
-- `publishedYear`
-- `availableCopies`
-- `genreId`
-- `createdAt`
-- `updatedAt`
-
-Each book belongs to one genre through the `genreId` foreign key.
+Stores book information, including:
+- Title
+- Author
+- ISBN
+- Description
+- Published year
+- Available copies
+- Genre ID
 
 ### Review
-Stores reviews submitted by users about books.
+Stores user reviews and ratings associated with books.
 
-Important fields:
-- `id`
-- `rating`
-- `comment`
-- `bookId`
-- `userId`
-- `createdAt`
+A review is connected to one user and one book. The combination of `bookId` and `userId` is unique.
 
-A review is connected to one book and one user. The combination of `bookId` and `userId` is unique, preventing a user from submitting multiple reviews for the same book.
+## 6. Database Relationships
 
-## 4. Database Relationships
-
-The database uses relational connections:
+The database uses the following relationships:
 
 - One Genre can have many Books.
 - Each Book belongs to one Genre.
@@ -86,55 +175,21 @@ The database uses relational connections:
 
 These relationships are implemented using Prisma relations and foreign keys.
 
-## 5. Schema Decisions
+## 7. Requirements
 
-### Why does Book reference Genre instead of embedding genre information?
+Before running the application, ensure you have:
 
-The Book model references the Genre model through a foreign key called `genreId` rather than storing the entire genre information inside every book record.
+- Node.js and npm.
+- PostgreSQL database access or a hosted PostgreSQL database.
+- Git.
+- Postman (for API testing).
 
-This design was chosen for the following reasons:
-
-**1. Reduced data duplication**
-
-If genre information were stored directly in every book record, the same genre name and description would be repeated across multiple records. Referencing Genre avoids unnecessary duplication.
-
-**2. Improved data consistency**
-
-When a genre name or description changes, it only needs to be updated in the Genre table. All related books continue to reference the same genre record.
-
-**3. Easier data management**
-
-The library can create, update, or manage genres independently of individual books.
-
-**4. Better relational structure**
-
-The relationship between Genre and Book is one-to-many. A genre can be associated with several books, while each book belongs to one genre.
-
-This approach supports database normalisation and helps maintain data integrity.
-
-## 6. Prisma ORM and Document Databases
-
-One important difference between Prisma with PostgreSQL and a document database such as MongoDB is how relationships are represented and managed.
-
-With PostgreSQL, related information is commonly stored in separate tables and connected using primary keys and foreign keys. Prisma makes these relationships easier to define and query.
-
-In a document database, related information may be embedded inside documents or connected through references. This provides flexibility but can introduce data duplication when information is embedded in multiple documents.
-
-## 7. Project Setup
-
-### Prerequisites
-
-Make sure you have installed:
-
-- Node.js
-- npm
-- PostgreSQL database or a hosted PostgreSQL database
-- Git
+## 8. Installation and Setup
 
 ### Step 1: Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone https://github.com/chiwowaibrahim-art/library-management-system.git
 ```
 
 Navigate into the project:
@@ -143,215 +198,23 @@ Navigate into the project:
 cd library-management-system
 ```
 
-### Step 2: Navigate to the API folder
+### Step 2: Configure the backend
+
+Navigate to the API directory:
 
 ```bash
 cd api
 ```
 
-### Step 3: Install dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Step 4: Configure environment variables
+Create an `.env` file inside the `api` directory.
 
-Create a `.env` file inside the `api` folder.
-
-Add your PostgreSQL connection string:
-
-```env
-DATABASE_URL="your_postgresql_connection_string"
-```
-
-Use `.env.example` as a reference when configuring your environment.
-
-**Important:** Never commit your actual `.env` file or expose your database credentials.
-
-### Step 5: Validate the Prisma schema
-
-```bash
-npx prisma validate
-```
-
-### Step 6: Generate Prisma Client
-
-```bash
-npx prisma generate
-```
-
-### Step 7: Run database migrations
-
-```bash
-npx prisma migrate dev --name init
-```
-
-### Step 8: Seed the database
-
-```bash
-npx prisma db seed
-```
-
-The seed script populates the database with at least four genres and fifteen books distributed across those genres.
-
-### Step 9: View the database
-
-```bash
-npx prisma studio
-```
-
-Prisma Studio provides a visual interface for viewing and managing database records.
-
-## 8. Environment Variables
-
-The application uses the following environment variable:
-
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | PostgreSQL database connection string |
-
-A sample configuration is provided in `api/.env.example`.
-
-## 9. Database Seeding
-
-The project includes a Prisma seed script located at:
-
-`api/prisma/seed.ts`
-
-The script creates initial records for:
-- Four or more book genres.
-- Fifteen or more books distributed across the genres.
-- Sample users and a review, if the optional Review model is included.
-
-The seed script uses upsert operations to reduce duplicate records when it is run more than once.
-
-# Library Management System API
-
-A RESTful backend application for managing library operations, developed using NestJS, TypeScript, PostgreSQL and Prisma ORM.
-
-## 1. Project Overview
-
-The Library Management System API provides a backend solution for managing books, genres and users in a library environment.
-
-It supports user registration and authentication, book management, genre management, book searching, filtering and pagination. It also implements JWT authentication and role-based authorization to control access to protected operations.
-
-## 2. Technologies Used
-
-| Technology | Purpose |
-|---|---|
-| NestJS | Backend framework |
-| TypeScript | Programming language |
-| PostgreSQL | Relational database |
-| Prisma ORM | Database access and management |
-| Passport.js | Authentication strategy integration |
-| JWT | Token-based authentication |
-| bcrypt | Password hashing |
-| class-validator | Request validation |
-| class-transformer | Request data transformation |
-| Postman | API testing |
-
-## 3. Features
-
-### Authentication and Users
-- User registration.
-- User login.
-- Password hashing using bcrypt.
-- JWT access token generation.
-- User management.
-- Support for Patron and Librarian roles.
-
-### Book Management
-- Create books.
-- Retrieve all books.
-- Retrieve a book by ID.
-- Update books.
-- Delete books.
-- Filter books by genre.
-- Search books by title or author.
-- Paginate book results.
-
-### Genre Management
-- Create genres.
-- Retrieve all genres.
-- Retrieve a genre by ID.
-- Update genres.
-- Delete genres.
-
-### Security and Validation
-- JWT-based authentication.
-- Role-based authorization.
-- Librarian-only book write operations.
-- Librarian-only user write operations.
-- Password hashing using bcrypt.
-- Global request validation.
-- Rejection of unexpected request properties.
-- CORS enabled.
-
-## 4. Project Structure
-
-```text
-library-management-system/
-│
-├── README.md
-│
-└── api/
-    ├── prisma/
-    │   ├── migrations/
-    │   ├── schema.prisma
-    │   └── seed.ts
-    │
-    ├── src/
-    │   ├── auth/
-    │   ├── books/
-    │   ├── genres/
-    │   ├── users/
-    │   ├── prisma/
-    │   ├── app.module.ts
-    │   └── main.ts
-    │
-    ├── docs/
-    │   └── postman_collection.json
-    │
-    ├── .env.example
-    ├── package.json
-    └── tsconfig.json
-```
-
-## 5. Requirements
-
-Before running the application, ensure you have:
-
-- Node.js and npm installed.
-- PostgreSQL database access.
-- Git installed.
-- Postman for API testing.
-
-## 6. Installation and Setup
-
-### Step 1: Clone the repository
-
-```bash
-git clone https://github.com/chiwowaibrahim-art/library-management-system.git
-```
-
-### Step 2: Navigate to the API directory
-
-```bash
-cd library-management-system/api
-```
-
-### Step 3: Install dependencies
-
-```bash
-npm install
-```
-
-### Step 4: Configure environment variables
-
-Create a `.env` file in the `api` directory using `.env.example` as a reference.
-
-Configure the following variables:
+Configure the following environment variables:
 
 ```env
 DATABASE_URL="your-postgresql-connection-string"
@@ -359,31 +222,25 @@ JWT_SECRET="your-secure-jwt-secret"
 JWT_EXPIRES_IN="1d"
 ```
 
-Replace the placeholders with your actual database connection string and a strong JWT secret.
-
-Never commit your real `.env` file or expose your database credentials.
-
-### Step 5: Generate Prisma Client
+Generate Prisma Client:
 
 ```bash
 npx prisma generate
 ```
 
-### Step 6: Apply database migrations
+Apply database migrations:
 
 ```bash
 npx prisma migrate deploy
 ```
 
-### Step 7: Seed the database
-
-If the Prisma seed command is configured in the project:
+Seed the database if the seed command is configured:
 
 ```bash
 npx prisma db seed
 ```
 
-### Step 8: Start the development server
+Start the backend development server:
 
 ```bash
 npm run start:dev
@@ -395,9 +252,47 @@ The API will run at:
 http://localhost:3000
 ```
 
-## 7. API Endpoints
+### Step 3: Configure the frontend
 
-All endpoints use the base URL:
+Open a second terminal and navigate to the client directory:
+
+```bash
+cd library-management-system/client
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file inside the `client` directory.
+
+Add:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+Start the frontend development server:
+
+```bash
+npm run dev
+```
+
+The frontend will normally be available at:
+
+```text
+http://localhost:5173
+```
+
+Open this address in your browser to access the application.
+
+**Important:** Both the backend and frontend development servers must be running for the application to retrieve library data.
+
+## 9. API Endpoints
+
+Base URL:
 
 ```text
 http://localhost:3000
@@ -415,7 +310,7 @@ http://localhost:3000
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/users` | Create a user |
-| GET | `/users` | Retrieve all users |
+| GET | `/users` | Retrieve users |
 | GET | `/users/:id` | Retrieve a user |
 | PATCH | `/users/:id` | Update a user |
 | DELETE | `/users/:id` | Delete a user |
@@ -425,7 +320,7 @@ http://localhost:3000
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/genres` | Create a genre |
-| GET | `/genres` | Retrieve all genres |
+| GET | `/genres` | Retrieve genres |
 | GET | `/genres/:id` | Retrieve a genre |
 | PATCH | `/genres/:id` | Update a genre |
 | DELETE | `/genres/:id` | Delete a genre |
@@ -439,34 +334,32 @@ http://localhost:3000
 | GET | `/books/:id` | Retrieve a book |
 | PATCH | `/books/:id` | Update a book |
 | DELETE | `/books/:id` | Delete a book |
-| GET | `/books?genreId=:genreId` | Filter books by genre |
-| GET | `/books?search=:term` | Search books by title or author |
-| GET | `/books?page=1&limit=10` | Paginate books |
+| GET | `/books?genreId=:genreId` | Filter by genre |
+| GET | `/books?search=:term` | Search by title or author |
+| GET | `/books?page=1&limit=10` | Paginate results |
 
-## 8. Authentication and Authorization
+## 10. Authentication and Authorization
 
-The application uses JSON Web Tokens (JWT) to authenticate users.
+The backend uses JSON Web Tokens (JWT) to authenticate users.
 
-After a successful login, the API returns an access token. Include this token in the Authorization header when accessing protected endpoints.
+After successful login, the API returns an access token. Include it in the Authorization header when accessing protected endpoints:
 
 ```text
 Authorization: Bearer YOUR_ACCESS_TOKEN
 ```
 
-The application supports two user roles:
+The system supports two roles:
 
 - **PATRON:** A regular library user.
 - **LIBRARIAN:** A user authorised to perform protected management operations.
 
-Book creation, updating and deletion are restricted to Librarians. User creation, updating and deletion are also restricted to Librarians.
-
 The API returns:
 - `401 Unauthorized` when authentication is missing or invalid.
-- `403 Forbidden` when an authenticated user lacks the required role.
+- `403 Forbidden` when an authenticated user lacks the required permissions.
 
-## 9. API Testing with Postman
+## 11. API Testing with Postman
 
-The Postman collection is included in:
+The Postman collection is available at:
 
 ```text
 api/docs/postman_collection.json
@@ -475,33 +368,50 @@ api/docs/postman_collection.json
 To test the API:
 
 1. Open Postman.
-2. Import the JSON collection.
-3. Set the `baseUrl` collection variable to `http://localhost:3000`.
+2. Import the collection.
+3. Set the `baseUrl` variable to `http://localhost:3000`.
 4. Register or log in to obtain access tokens.
 5. Configure the relevant token variables.
-6. Run the requests in the collection.
+6. Execute the requests.
 
-The collection covers authentication, Users CRUD, Genres CRUD, Books CRUD, filtering, searching, pagination and authorization tests.
+The collection covers authentication, CRUD operations, filtering, searching, pagination and authorization tests.
 
-## 10. Build Verification
+## 12. Build Verification
 
-To verify that the application compiles successfully, run:
+### Backend
+
+From the `api` directory:
 
 ```bash
 npx nest build
 ```
 
-## 11. Environment and Security Notes
+### Frontend
 
-- Keep database credentials in `.env`.
-- Do not commit `.env` to GitHub.
-- Use a strong and private JWT secret.
-- Use `.env.example` to document required environment variables.
+From the `client` directory:
+
+```bash
+npm run build
+```
+
+Successful builds indicate that the respective applications compile without build errors.
+
+## 13. Environment and Security Notes
+
+- Keep database credentials inside the backend `.env` file.
+- Keep the JWT secret private.
+- Do not commit actual `.env` files to GitHub.
+- Use `.env.example` to document backend environment variables.
+- The frontend `.env` should contain the API URL, not database credentials or JWT secrets.
 - Passwords are hashed using bcrypt before storage.
-- Protected operations use JWT authentication and role-based authorization.
+- Protected backend operations use JWT authentication and role-based authorization.
 
-## 12. Project Status
+## 14. Project Status
 
-The core API features have been implemented and tested, including CRUD operations, authentication, authorization, filtering, searching, pagination and request validation.
+The Library Management System includes a NestJS backend API and a React frontend.
 
-The project includes a Postman collection for API testing and documentation.
+The backend implements database management, CRUD operations, authentication, authorization, filtering, searching, pagination and request validation.
+
+The frontend provides a responsive book catalogue with search, genre filtering, sorting, individual book details and user-friendly loading and error states.
+
+Both applications have been built and the core frontend functionality has been tested.
