@@ -226,30 +226,282 @@ The script creates initial records for:
 
 The seed script uses upsert operations to reduce duplicate records when it is run more than once.
 
-## 10. Project Structure
+# Library Management System API
+
+A RESTful backend application for managing library operations, developed using NestJS, TypeScript, PostgreSQL and Prisma ORM.
+
+## 1. Project Overview
+
+The Library Management System API provides a backend solution for managing books, genres and users in a library environment.
+
+It supports user registration and authentication, book management, genre management, book searching, filtering and pagination. It also implements JWT authentication and role-based authorization to control access to protected operations.
+
+## 2. Technologies Used
+
+| Technology | Purpose |
+|---|---|
+| NestJS | Backend framework |
+| TypeScript | Programming language |
+| PostgreSQL | Relational database |
+| Prisma ORM | Database access and management |
+| Passport.js | Authentication strategy integration |
+| JWT | Token-based authentication |
+| bcrypt | Password hashing |
+| class-validator | Request validation |
+| class-transformer | Request data transformation |
+| Postman | API testing |
+
+## 3. Features
+
+### Authentication and Users
+- User registration.
+- User login.
+- Password hashing using bcrypt.
+- JWT access token generation.
+- User management.
+- Support for Patron and Librarian roles.
+
+### Book Management
+- Create books.
+- Retrieve all books.
+- Retrieve a book by ID.
+- Update books.
+- Delete books.
+- Filter books by genre.
+- Search books by title or author.
+- Paginate book results.
+
+### Genre Management
+- Create genres.
+- Retrieve all genres.
+- Retrieve a genre by ID.
+- Update genres.
+- Delete genres.
+
+### Security and Validation
+- JWT-based authentication.
+- Role-based authorization.
+- Librarian-only book write operations.
+- Librarian-only user write operations.
+- Password hashing using bcrypt.
+- Global request validation.
+- Rejection of unexpected request properties.
+- CORS enabled.
+
+## 4. Project Structure
 
 ```text
 library-management-system/
 │
-├── api/
-│   ├── prisma/
-│   │   ├── schema.prisma
-│   │   └── seed.ts
-│   │
-│   ├── src/
-│   │   └── prisma/
-│   │       └── prisma.service.ts
-│   │
-│   ├── .env
-│   ├── .env.example
-│   └── package.json
-│
 ├── README.md
-└── .gitignore
+│
+└── api/
+    ├── prisma/
+    │   ├── migrations/
+    │   ├── schema.prisma
+    │   └── seed.ts
+    │
+    ├── src/
+    │   ├── auth/
+    │   ├── books/
+    │   ├── genres/
+    │   ├── users/
+    │   ├── prisma/
+    │   ├── app.module.ts
+    │   └── main.ts
+    │
+    ├── docs/
+    │   └── postman_collection.json
+    │
+    ├── .env.example
+    ├── package.json
+    └── tsconfig.json
 ```
 
-## 11. Conclusion
+## 5. Requirements
 
-The Library Management System database is designed using relational database principles. Prisma ORM provides a structured approach to defining models, managing relationships, validating the schema, and interacting with PostgreSQL.
+Before running the application, ensure you have:
 
-The use of foreign keys, unique constraints, and database migrations helps maintain data consistency and provides a foundation for expanding the library management application.
+- Node.js and npm installed.
+- PostgreSQL database access.
+- Git installed.
+- Postman for API testing.
+
+## 6. Installation and Setup
+
+### Step 1: Clone the repository
+
+```bash
+git clone https://github.com/chiwowaibrahim-art/library-management-system.git
+```
+
+### Step 2: Navigate to the API directory
+
+```bash
+cd library-management-system/api
+```
+
+### Step 3: Install dependencies
+
+```bash
+npm install
+```
+
+### Step 4: Configure environment variables
+
+Create a `.env` file in the `api` directory using `.env.example` as a reference.
+
+Configure the following variables:
+
+```env
+DATABASE_URL="your-postgresql-connection-string"
+JWT_SECRET="your-secure-jwt-secret"
+JWT_EXPIRES_IN="1d"
+```
+
+Replace the placeholders with your actual database connection string and a strong JWT secret.
+
+Never commit your real `.env` file or expose your database credentials.
+
+### Step 5: Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+### Step 6: Apply database migrations
+
+```bash
+npx prisma migrate deploy
+```
+
+### Step 7: Seed the database
+
+If the Prisma seed command is configured in the project:
+
+```bash
+npx prisma db seed
+```
+
+### Step 8: Start the development server
+
+```bash
+npm run start:dev
+```
+
+The API will run at:
+
+```text
+http://localhost:3000
+```
+
+## 7. API Endpoints
+
+All endpoints use the base URL:
+
+```text
+http://localhost:3000
+```
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/auth/register` | Register a user |
+| POST | `/auth/login` | Authenticate a user |
+
+### Users
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/users` | Create a user |
+| GET | `/users` | Retrieve all users |
+| GET | `/users/:id` | Retrieve a user |
+| PATCH | `/users/:id` | Update a user |
+| DELETE | `/users/:id` | Delete a user |
+
+### Genres
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/genres` | Create a genre |
+| GET | `/genres` | Retrieve all genres |
+| GET | `/genres/:id` | Retrieve a genre |
+| PATCH | `/genres/:id` | Update a genre |
+| DELETE | `/genres/:id` | Delete a genre |
+
+### Books
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/books` | Create a book |
+| GET | `/books` | Retrieve books |
+| GET | `/books/:id` | Retrieve a book |
+| PATCH | `/books/:id` | Update a book |
+| DELETE | `/books/:id` | Delete a book |
+| GET | `/books?genreId=:genreId` | Filter books by genre |
+| GET | `/books?search=:term` | Search books by title or author |
+| GET | `/books?page=1&limit=10` | Paginate books |
+
+## 8. Authentication and Authorization
+
+The application uses JSON Web Tokens (JWT) to authenticate users.
+
+After a successful login, the API returns an access token. Include this token in the Authorization header when accessing protected endpoints.
+
+```text
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+The application supports two user roles:
+
+- **PATRON:** A regular library user.
+- **LIBRARIAN:** A user authorised to perform protected management operations.
+
+Book creation, updating and deletion are restricted to Librarians. User creation, updating and deletion are also restricted to Librarians.
+
+The API returns:
+- `401 Unauthorized` when authentication is missing or invalid.
+- `403 Forbidden` when an authenticated user lacks the required role.
+
+## 9. API Testing with Postman
+
+The Postman collection is included in:
+
+```text
+api/docs/postman_collection.json
+```
+
+To test the API:
+
+1. Open Postman.
+2. Import the JSON collection.
+3. Set the `baseUrl` collection variable to `http://localhost:3000`.
+4. Register or log in to obtain access tokens.
+5. Configure the relevant token variables.
+6. Run the requests in the collection.
+
+The collection covers authentication, Users CRUD, Genres CRUD, Books CRUD, filtering, searching, pagination and authorization tests.
+
+## 10. Build Verification
+
+To verify that the application compiles successfully, run:
+
+```bash
+npx nest build
+```
+
+## 11. Environment and Security Notes
+
+- Keep database credentials in `.env`.
+- Do not commit `.env` to GitHub.
+- Use a strong and private JWT secret.
+- Use `.env.example` to document required environment variables.
+- Passwords are hashed using bcrypt before storage.
+- Protected operations use JWT authentication and role-based authorization.
+
+## 12. Project Status
+
+The core API features have been implemented and tested, including CRUD operations, authentication, authorization, filtering, searching, pagination and request validation.
+
+The project includes a Postman collection for API testing and documentation.
